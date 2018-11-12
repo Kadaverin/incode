@@ -10,6 +10,7 @@ import SignInPage from 'containers/SignInPage';
 import SignUpPage from 'containers/SignUpPage';
 import HomePage from 'containers/HomePage';
 import configureStore from 'store';
+import AuthCheck from 'containers/AuthCheck'
 import App from './App';
 import './index.css';
 
@@ -19,10 +20,9 @@ ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <Switch>
-        <Route path={routes.root} exact component={App} />
-        <Route path={routes.signIn} component={SignInPage} />
         <Route path={routes.signUp} component={SignUpPage} />
-        <Route path={routes.home} component={HomePage} />
+        <Route path={routes.signIn} render={ () => <AuthCheck Component={SignInPage} /> }/>  
+        <Route path={routes.appRoot} render={ () => <AuthCheck Component={App} /> } />
       </Switch>
     </ConnectedRouter>
   </Provider>, 

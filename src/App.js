@@ -1,28 +1,37 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Route, Switch } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as routes from 'constants/routes/ui';
+import { getAuthUserRequest } from 'actions/auth'
+import HomePage from 'containers/HomePage';
+import history from './history';
+import { Redirect } from 'react-router-dom'
 import './App.css';
 
+
 class App extends Component {
+  componentDidMount(){
+    this.props.actions.getAuthUserRequest()
+  }
+  
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <ConnectedRouter history={history}>
+        <Switch>
+          <Route path={routes.home} component={HomePage} />
+          <Redirect to={routes.home}/>
+        </Switch>
+      </ConnectedRouter>
     );
   }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({
+    getAuthUserRequest
+  }, dispatch)
+})
+
+export default connect(null, mapDispatchToProps)(App);

@@ -44,7 +44,7 @@ class AuthForm extends Component {
   }
 
   render(){
-    const { classes } = this.props;
+    const { classes, btnText } = this.props;
     return (
       <div className={classes.flexCenter}>
 
@@ -78,7 +78,7 @@ class AuthForm extends Component {
               style={{ textTransform: "none" }}
               onClick={ (event) => { event.preventDefault(); this.handleSubmit() } }
             >
-              Login
+              {btnText}
             </Button>
           </Grid>
       </div>
