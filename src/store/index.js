@@ -1,5 +1,7 @@
 import { applyMiddleware, compose, createStore } from 'redux'
-import { connectRouter, routerMiddleware } from 'connected-react-router'
+import { routerMiddleware } from 'connected-react-router'
+import actionRequestsMiddleware from 'helpers/actionRequestsMiddleware'
+
 import createRootReducer from 'reducers'
 
 export default function configureStore (history) {
@@ -10,6 +12,7 @@ export default function configureStore (history) {
 
   const middlewares = [
    routerMiddleware(history),
+   actionRequestsMiddleware
   ]
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

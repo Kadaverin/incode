@@ -1,4 +1,4 @@
-export const start = (actionType) => `START__${actionType}`;
+export const start = (actionType) => `${actionType}_REQUEST`;
 export const success = (actionType) => `SUCCESS__${actionType}`;
 
 export const failActionWithType = (actionType, error, status ) =>({
