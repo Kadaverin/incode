@@ -2,13 +2,17 @@ import React, {Component} from 'react'
 import {bindActionCreators} from 'redux'
 import AuthForm  from 'components/AuthForm'
 import AuthFormHeader from 'components/AuthFormHeader'
-import { signUpRequest } from 'actions/auth'
+import { signUpRequest, clearAuthErrors } from 'actions/auth'
 import {connect} from 'react-redux'
 import { signIn } from 'constants/routes/ui'
 import history from '../../history'
-
+import { errorResponse } from 'selectors/auth'
 
 class SignUpPage extends Component {
+  componentWillUnmount(){
+    this.props.actions.clearAuthErrors()
+  }
+
   render(){
     return(
       <div>
@@ -20,16 +24,21 @@ class SignUpPage extends Component {
         <AuthForm 
           handleSubmit={this.props.actions.signUpRequest}
           btnText='Sign up'
+          errorResponse = {this.props.errorResponse}
         />
       </div>
     )
   }
 }
 
+const mapStateToProps = (state) => ({
+  errorResponse: errorResponse(state)
+})
+
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
-    signUpRequest
+    signUpRequest, clearAuthErrors
   }, dispatch)
 })
 
-export default connect(null, mapDispatchToProps)(SignUpPage)
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage)

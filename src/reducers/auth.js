@@ -1,29 +1,56 @@
-import { success } from 'helpers/actionProcessTemplaters'
+import { success, start, fail } from 'helpers/actionProcessTemplaters'
 import * as types from 'constants/actionTypes/auth'
 
 const initialState = {
   user: {},
-  token: null
+  isAuth: false,
+  isLoading: false,
+  errorResponse: null
 }
 
 const auth = (state = initialState, action) => {
   switch(action.type){
     case( success(types.SIGN_IN) ): 
+    case( success(types.SIGN_UP) ):
       return {
-        ...state, 
-        token: action.payload.token
+        user: {},
+        isLoading: false, 
+        isAuth: true,
       }
     
     case( success(types.GET_AUTH_USER) ):
       return {
-        ...state,
-        user: action.payload
+        isLoading: false,
+        user: action.payload,
+        isAuth: true
       }
-    
-    case(types.REFRESH_TOKEN_FROM_LOCAL_STORAGE): 
+
+    case( start(types.GET_AUTH_USER) ):
+    case( start(types.SIGN_IN) ):
+    case( start(types.SIGN_UP) ):
       return {
         ...state,
-        token: action.payload
+        isLoading: true
+      }
+
+    case( fail(types.GET_AUTH_USER) ):
+      return {
+        ...state,
+        isLoading: false
+      }
+
+    case( fail(types.SIGN_IN) ):
+    case( fail(types.SIGN_UP) ):
+      return {
+        ...state,
+        isLoading: false,
+        errorResponse: action.error
+      }
+
+    case( types.CLEAR_AUTH_ERRORS ): 
+      return {
+        ...state,
+        errorResponse: null
       }
     
     default: return state

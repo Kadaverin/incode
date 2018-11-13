@@ -1,2 +1,4 @@
-export const isLoggedIn = (state) => !!state.auth.token && !!localStorage.getItem('token')
+export const isAuth = ({auth}) => auth.isAuth
+export const isLoading = ({auth}) => auth.isLoading
 export const authUser = ({auth}) => auth.user
+export const errorResponse = ({auth}) => auth.errorResponse

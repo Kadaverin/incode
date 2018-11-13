@@ -12,10 +12,12 @@ export const signInRequest = (credentials) => dispatch => {
   .then( response => {
     successAuthHandler(response.data.token)
     dispatch( successActionWithType(types.SIGN_IN, response.data) )
+    dispatch( getAuthUserRequest() )
   })
   .catch(err => {
     console.error(err)
-    dispatch( failActionWithType(types.SIGN_IN, err))
+    const {data, status} = err.response
+    dispatch( failActionWithType(types.SIGN_IN, data.error, status ))
   })
 }
 
@@ -27,10 +29,12 @@ export const signUpRequest = (credentials) => dispatch => {
   .then( response => {
     successAuthHandler(response.data.token)
     dispatch( successActionWithType(types.SIGN_UP, response.data) )
+    dispatch( getAuthUserRequest() )
   })
   .catch(err => {
     console.error(err)
-    dispatch( failActionWithType(types.SIGN_UP, err) )
+    const {data, status} = err.response
+    dispatch( failActionWithType(types.SIGN_UP, data.error, status) )
   })
 }
 
@@ -47,13 +51,12 @@ export const getAuthUserRequest = () => dispatch => {
   })
 }
 
-// Refresh token from local storage to redux
-export const refreshAuth = (token) => ({
-  type: types.REFRESH_TOKEN_FROM_LOCAL_STORAGE,
-  payload: token
-})
 
-// LOGOUT
+
 export const logout = () => ({
   type: types.LOGOUT
+})
+
+export const clearAuthErrors = () =>({
+  type: types.CLEAR_AUTH_ERRORS
 })

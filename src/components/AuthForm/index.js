@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
-import { withStyles, Grid, TextField, Button, Paper } from '@material-ui/core'
+import { withStyles, Grid, TextField, Button, Paper, Typography } from '@material-ui/core'
 import PropTypes from 'prop-types'
+
+const emailRegExp = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+const emailErrorMsg = 'email is incorrect'
+const passwordErrorMsg = 'password length cannot be smaller than 5 characters'
 
 const styles = theme => ({
   flexCenter: {
@@ -23,26 +27,51 @@ class AuthForm extends Component {
   constructor(props){
     super(props)
     this.state = {
-      login: this.props.name,
-      password: this.props.password
+      login: this.props.login,
+      password: this.props.password,
+      errors: {
+        login: '',
+        password: ''
+      }
     }
+
+    this.validators = {
+      'login': (str) => emailRegExp.test(str) ? '' : emailErrorMsg,
+      'password': (str) => str.length >= 5 ? '' : passwordErrorMsg
+    }
+      
   }
 
   handleSubmit = (event) => {
-    // todo: validation
     event.preventDefault();
-    this.props.handleSubmit(this.state);
+    this.props.handleSubmit({
+      login: this.state.login,
+      password: this.state.password
+    });
   }
 
   handleFieldChange = ({target}) => {
-    this.setState({
-      [target.name]: target.value
-    })
+    const errorMsg = this.validators[target.name](target.value) 
+
+    this.setState( 
+      prevState => ({
+        ...prevState,
+        [target.name]: target.value,
+        errors: {
+          ...prevState.errors,
+          [target.name]: errorMsg
+        }
+      })
+    )
+  }
+
+  isSubmitDisabled = () => {
+    return !this.state.login || !this.state.password || !!this.state.errors.login || !!this.state.errors.password 
   }
 
   render(){
-    const { classes, btnText } = this.props;
-    const { login } = this.state;
+    const { classes, btnText, errorResponse } = this.props;
+    const { errors } = this.state;
     return (
       <div className={classes.flexCenter}>
         <Paper className={classes.formConteiner}>
@@ -53,8 +82,8 @@ class AuthForm extends Component {
                   name='login' 
                   label="Login"
                   type='email' 
-                  error={login === ""}
-                  helperText={login === "" ? 'Empty field!' : ''}
+                  error={!!errors['login']}
+                  helperText={errors['login']}
                   fullWidth autoFocus required 
                   onChange = {this.handleFieldChange}
                 />
@@ -65,10 +94,21 @@ class AuthForm extends Component {
                   name='password' 
                   label="Password" 
                   type="password" 
+                  error={!!errors['password']}
+                  helperText={errors['password']}
                   fullWidth required 
                   onChange = {this.handleFieldChange}
                 />
               </Grid>
+
+              {
+                errorResponse &&
+                <Grid item>
+                  <Typography color='error'>
+                    {errorResponse + '. Try again'}
+                  </Typography>
+                </Grid>
+              }
             
               <Grid item >
                 <Button 
@@ -76,10 +116,12 @@ class AuthForm extends Component {
                   color="primary" 
                   style={{ textTransform: "none" }}
                   type='submit'
+                  disabled = { this.isSubmitDisabled() }
                 >
                   {btnText}
                 </Button>
               </Grid>
+
             </Grid>
           </form>
         </Paper>
@@ -97,6 +139,7 @@ AuthForm.defaultProps = {
 AuthForm.propTypes = {
   btnText: PropTypes.string,
   password: PropTypes.string,
+  errorResponse: PropTypes.string,
   login: PropTypes.string,
   classes: PropTypes.object
 }
