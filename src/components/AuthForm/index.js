@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 const emailRegExp = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 const emailErrorMsg = 'email is incorrect'
-const passwordErrorMsg = 'password length cannot be smaller than 5 characters'
+const passwordErrorMsg = 'password length cannot be less than 5 characters'
 
 const styles = theme => ({
   flexCenter: {
@@ -20,8 +20,6 @@ const styles = theme => ({
       maxWidth: 500
   }
 });
-
-
 
 class AuthForm extends Component {
   constructor(props){
@@ -39,7 +37,6 @@ class AuthForm extends Component {
       'login': (str) => emailRegExp.test(str) ? '' : emailErrorMsg,
       'password': (str) => str.length >= 5 ? '' : passwordErrorMsg
     }
-      
   }
 
   handleSubmit = (event) => {
@@ -63,6 +60,18 @@ class AuthForm extends Component {
         }
       })
     )
+  }
+
+  renderServerError = () => {
+    if(this.props.errorResponse){
+      return(
+        <Grid item>
+          <Typography color='error'>
+            {this.props.errorResponse + '. Try again'}
+          </Typography>
+        </Grid>
+      )
+    }
   }
 
   isSubmitDisabled = () => {
@@ -101,14 +110,7 @@ class AuthForm extends Component {
                 />
               </Grid>
 
-              {
-                errorResponse &&
-                <Grid item>
-                  <Typography color='error'>
-                    {errorResponse + '. Try again'}
-                  </Typography>
-                </Grid>
-              }
+              { this.renderServerError() }
             
               <Grid item >
                 <Button 
@@ -121,7 +123,6 @@ class AuthForm extends Component {
                   {btnText}
                 </Button>
               </Grid>
-
             </Grid>
           </form>
         </Paper>

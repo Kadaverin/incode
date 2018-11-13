@@ -28,13 +28,14 @@ class App extends Component {
   
   render() {
     if(this.props.isLoading){
+      // TEMP SPINNER, change in future
       return (
         <div style={loaderSylesWrp}>
-            <CircleLoader
-              sizeUnit={"px"}
-              size={150}
-              color={'#36D7B7'}
-            />
+          <CircleLoader
+            sizeUnit={"px"}
+            size={150}
+            color={'#36D7B7'}
+          />
         </div>
       )
     }
