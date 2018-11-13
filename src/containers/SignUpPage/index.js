@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {bindActionCreators} from 'redux'
-import AppBar from '@material-ui/core/AppBar'
 import AuthForm  from 'components/AuthForm'
 import AuthFormHeader from 'components/AuthFormHeader'
 import { signUpRequest } from 'actions/auth'

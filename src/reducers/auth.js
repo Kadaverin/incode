@@ -1,4 +1,4 @@
-import { start, success, fail } from 'helpers/actionProcessTemplaters'
+import { success } from 'helpers/actionProcessTemplaters'
 import * as types from 'constants/actionTypes/auth'
 
 const initialState = {
@@ -18,6 +18,12 @@ const auth = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload
+      }
+    
+    case(types.REFRESH_TOKEN_FROM_LOCAL_STORAGE): 
+      return {
+        ...state,
+        token: action.payload
       }
     
     default: return state

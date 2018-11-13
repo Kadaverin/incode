@@ -1,25 +1,21 @@
 import React, { Component } from 'react'
-import { Paper, withStyles, Grid, TextField, Button, FormControlLabel, Checkbox, MuiThemeProvider } from '@material-ui/core';
+import { withStyles, Grid, TextField, Button, Paper } from '@material-ui/core'
+import PropTypes from 'prop-types'
 
 const styles = theme => ({
   flexCenter: {
-      display: 'flex',
-      justifyContent: 'center',
-      paddingTop: '10%',
+      paddingTop: 'calc(56px + 10%)',
       height: '100vh',
       boxSizing: 'border-box'
-
-      
-    
   },
   formConteiner: {
-      padding: theme.spacing.unit,
+      padding: theme.spacing.unit * 4,
       width: '50%',
+      margin: '0 auto',
       minWidth: 200,
       maxWidth: 500
   }
 });
-
 
 
 
@@ -32,65 +28,77 @@ class AuthForm extends Component {
     }
   }
 
-  handleSubmit = () => {
+  handleSubmit = (event) => {
     // todo: validation
-    this.props.handleSubmit(this.state)
+    event.preventDefault();
+    this.props.handleSubmit(this.state);
   }
 
   handleFieldChange = (input) => {
     this.setState({
       [input.name]: input.value
-    }, () => { console.log(this.state)})
+    })
   }
 
   render(){
     const { classes, btnText } = this.props;
+    const { login } = this.state;
     return (
       <div className={classes.flexCenter}>
-
-      <div className={classes.formConteiner}>
-
-          <Grid container spacing={8} alignItems="flex-end">
-            <Grid item md={true} sm={true} xs={true}>
-              <TextField 
-                name='login' 
-                label="Login" 
-                fullWidth autoFocus required 
-                onChange = {({target}) => this.handleFieldChange(target)}
-              />
+        <Paper className={classes.formConteiner}>
+          <form onSubmit={(event) =>  this.handleSubmit(event)}>
+            <Grid container spacing={24} direction='column'>
+              <Grid item >
+                <TextField 
+                  name='login' 
+                  label="Login"
+                  type='email' 
+                  error={login === ""}
+                  helperText={login === "" ? 'Empty field!' : ''}
+                  fullWidth autoFocus required 
+                  onChange = {({target}) => this.handleFieldChange(target)}
+                />
+              </Grid>
+        
+              <Grid item >
+                <TextField 
+                  name='password' 
+                  label="Password" 
+                  type="password" 
+                  fullWidth required 
+                  onChange = {({target}) => this.handleFieldChange(target)}
+                />
+              </Grid>
+            
+              <Grid item >
+                <Button 
+                  variant="outlined" 
+                  color="primary" 
+                  style={{ textTransform: "none" }}
+                  type='submit'
+                >
+                  {btnText}
+                </Button>
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid container spacing={8} alignItems="flex-end">
-            <Grid item md={true} sm={true} xs={true}>
-              <TextField 
-                name='password' 
-                label="Password" 
-                type="password" 
-                fullWidth required 
-                onChange = {({target}) => this.handleFieldChange(target)}
-              />
-            </Grid>
-          </Grid>
-          <Grid container style={{ marginTop: '10px' }}>
-            <Button 
-              variant="outlined" 
-              color="primary" 
-              style={{ textTransform: "none" }}
-              onClick={ (event) => { event.preventDefault(); this.handleSubmit() } }
-            >
-              {btnText}
-            </Button>
-          </Grid>
+          </form>
+        </Paper>
       </div>
-      </div>
-
     )
   }
 }
 
 AuthForm.defaultProps = {
   login: '',
-  password: ''
+  password: '',
+  btnText: 'Submit'
+}
+
+AuthForm.propTypes = {
+  btnText: PropTypes.string,
+  password: PropTypes.string,
+  login: PropTypes.string,
+  classes: PropTypes.object
 }
 
 export default withStyles(styles)(AuthForm)

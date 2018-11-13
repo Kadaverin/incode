@@ -1,6 +1,6 @@
 import React from 'react'
-import { AppBar, Typography, Button, Toolbar} from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, AppBar, Typography, Button, Toolbar} from '@material-ui/core'
+import PropTypes from 'prop-types'
 
 const styles = {
   root: {
@@ -22,10 +22,19 @@ const AuthFormHeader = ({ headerText, btnText, onBtnClick, classes }) => {
         <Typography variant="h6" color="inherit" className={classes.grow}>
           {headerText}
         </Typography>
-        <Button color="inherit" onClick={ (e) => {e.preventDefault(); onBtnClick()} }> {btnText} </Button>
+        <Button color="inherit" onClick={ (e) => {e.preventDefault(); onBtnClick()} }> 
+          {btnText} 
+        </Button>
       </Toolbar>
-     </AppBar>
+    </AppBar>
   )
 }
 
-export default  withStyles(styles)(AuthFormHeader)
+AuthFormHeader.propTypes = {
+  headerText: PropTypes.string.isRequired,
+  btnText: PropTypes.string.isRequired,
+  onBtnClick: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
+}
+
+export default withStyles(styles)(AuthFormHeader)

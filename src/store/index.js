@@ -5,7 +5,6 @@ import thunk from 'redux-thunk';
 import createRootReducer from 'reducers'
 
 export default function configureStore (history) {
-
   const enhancers = [
 
   ]

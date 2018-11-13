@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { authUser } from 'selectors/auth'
 
 class HomePage extends Component {
   render(){
+    const { authUser } = this.props
+    if(!authUser.login){
+      return null
+    }
     return(
       <div>
         <h1>
-          {`Hello, ${this.props.authUser.login}`}
+          {`Hello, ${authUser.login}`}
         </h1>
       </div>
     )
