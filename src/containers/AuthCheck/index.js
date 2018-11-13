@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { isLoggedIn } from 'selectors/auth'
 import { currentPath } from 'selectors/router'
 import { signIn, signUp, appRoot } from 'constants/routes/ui'
-
+  
 const AuthCheck = (props) => {
   const {Component, isLoggedIn, currentPath} = props
 

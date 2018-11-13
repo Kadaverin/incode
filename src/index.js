@@ -21,7 +21,7 @@ ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <Switch>
-        <Route path={routes.signUp}  render={ () => <AuthCheck Component={SignUpPage}/> }/>
+        <Route path={routes.signUp} render={ () => <AuthCheck Component={SignUpPage}/> }/>
         <Route path={routes.signIn} render={ () => <AuthCheck Component={SignInPage}/> }/>  
         <Route path={routes.appRoot} render={ () => <AuthCheck Component={App} /> }/>
       </Switch>

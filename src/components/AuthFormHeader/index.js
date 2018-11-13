@@ -16,13 +16,19 @@ const styles = {
 };
 
 const AuthFormHeader = ({ headerText, btnText, onBtnClick, classes }) => {
+
+  const handleClick = (e) => {
+    e.preventDefault(); 
+    onBtnClick();
+  }
+  
   return(
     <AppBar>
       <Toolbar>
         <Typography variant="h6" color="inherit" className={classes.grow}>
           {headerText}
         </Typography>
-        <Button color="inherit" onClick={ (e) => {e.preventDefault(); onBtnClick()} }> 
+        <Button color="inherit" onClick={ handleClick }> 
           {btnText} 
         </Button>
       </Toolbar>

@@ -34,9 +34,9 @@ class AuthForm extends Component {
     this.props.handleSubmit(this.state);
   }
 
-  handleFieldChange = (input) => {
+  handleFieldChange = ({target}) => {
     this.setState({
-      [input.name]: input.value
+      [target.name]: target.value
     })
   }
 
@@ -46,7 +46,7 @@ class AuthForm extends Component {
     return (
       <div className={classes.flexCenter}>
         <Paper className={classes.formConteiner}>
-          <form onSubmit={(event) =>  this.handleSubmit(event)}>
+          <form onSubmit={this.handleSubmit}>
             <Grid container spacing={24} direction='column'>
               <Grid item >
                 <TextField 
@@ -56,7 +56,7 @@ class AuthForm extends Component {
                   error={login === ""}
                   helperText={login === "" ? 'Empty field!' : ''}
                   fullWidth autoFocus required 
-                  onChange = {({target}) => this.handleFieldChange(target)}
+                  onChange = {this.handleFieldChange}
                 />
               </Grid>
         
@@ -66,7 +66,7 @@ class AuthForm extends Component {
                   label="Password" 
                   type="password" 
                   fullWidth required 
-                  onChange = {({target}) => this.handleFieldChange(target)}
+                  onChange = {this.handleFieldChange}
                 />
               </Grid>
             

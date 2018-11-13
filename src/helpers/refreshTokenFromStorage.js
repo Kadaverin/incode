@@ -4,7 +4,7 @@ import successAuthHandler from 'helpers/successAuthHandler'
 const refreshTokenFromStorage = (store) => {
   const token = localStorage.getItem('token')
 
-  if (token ) {
+  if (token) {
     successAuthHandler(token, false)
     store.dispatch(refreshAuth(token))
   }
