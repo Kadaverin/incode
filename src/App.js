@@ -12,6 +12,7 @@ import SignUpPage from 'containers/SignUpPage';
 import AuthCheck from 'containers/AuthCheck';
 import {isUserLoading} from 'selectors/auth';
 import {CircleLoader} from 'react-spinners';
+import PropTypes from 'prop-types';
 import './App.css';
 
 const loaderWrpSyles = {
@@ -67,5 +68,12 @@ const mapDispatchToProps = (dispatch) => ({
     getAuthUserRequest
   }, dispatch)
 })
+
+App.propTypes = {
+  isUserLoading: PropTypes.bool.isRequired,
+  actions: PropTypes.shape({
+    getAuthUserRequest: PropTypes.func.isRequired
+  })
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

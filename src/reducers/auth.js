@@ -4,7 +4,7 @@ import * as types from 'constants/actionTypes/auth'
 const initialState = {
   user: {},
   isAuth: false,
-  isAuthorizing: false,
+  isAuthorizing: false, // will be using for form spinner in future
   isUserLoading: false,
   errorResponse: null
 }
@@ -14,13 +14,14 @@ const auth = (state = initialState, action) => {
     case( success(types.SIGN_IN) ): 
     case( success(types.SIGN_UP) ):
       return {
-        user: {},
+        ...state,
         isAuthorizing: false, 
         isAuth: true,
       }
     
     case( success(types.GET_AUTH_USER) ):
       return {
+        ...state,
         isUserLoading: false,
         user: action.payload,
         isAuth: true

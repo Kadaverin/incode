@@ -6,6 +6,7 @@ import { signUpRequest, clearAuthErrors } from 'actions/auth'
 import { connect } from 'react-redux'
 import { signIn } from 'constants/routes/ui'
 import { errorResponse } from 'selectors/auth'
+import PropTypes from 'prop-types'
 
 class SignUpPage extends Component {
   componentWillUnmount(){
@@ -39,5 +40,13 @@ const mapDispatchToProps = (dispatch) => ({
     signUpRequest, clearAuthErrors
   }, dispatch)
 })
+
+SignUpPage.propTypes = {
+  errorResponse: PropTypes.string,
+  actions: PropTypes.shape({
+    signUpRequest: PropTypes.func.isRequired,
+    clearAuthErrors: PropTypes.func.isRequired,
+  })
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage)
