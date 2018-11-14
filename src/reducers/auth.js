@@ -4,7 +4,8 @@ import * as types from 'constants/actionTypes/auth'
 const initialState = {
   user: {},
   isAuth: false,
-  isLoading: false,
+  isAuthorizing: false,
+  isUserLoading: false,
   errorResponse: null
 }
 
@@ -14,36 +15,42 @@ const auth = (state = initialState, action) => {
     case( success(types.SIGN_UP) ):
       return {
         user: {},
-        isLoading: false, 
+        isAuthorizing: false, 
         isAuth: true,
       }
     
     case( success(types.GET_AUTH_USER) ):
       return {
-        isLoading: false,
+        isUserLoading: false,
         user: action.payload,
         isAuth: true
       }
 
     case( start(types.GET_AUTH_USER) ):
+      return {
+        ...state,
+        isUserLoading: true
+      }
+
     case( start(types.SIGN_IN) ):
     case( start(types.SIGN_UP) ):
       return {
         ...state,
-        isLoading: true
+        isAuthorizing: true
       }
+
 
     case( fail(types.GET_AUTH_USER) ):
       return {
         ...state,
-        isLoading: false
+        isUserLoading: false
       }
 
     case( fail(types.SIGN_IN) ):
     case( fail(types.SIGN_UP) ):
       return {
         ...state,
-        isLoading: false,
+        isAuthorizing: false,
         errorResponse: action.error
       }
 

@@ -3,9 +3,8 @@ import {bindActionCreators} from 'redux'
 import AuthForm  from 'components/AuthForm'
 import AuthFormHeader from 'components/AuthFormHeader'
 import { signUpRequest, clearAuthErrors } from 'actions/auth'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { signIn } from 'constants/routes/ui'
-import history from '../../history'
 import { errorResponse } from 'selectors/auth'
 
 class SignUpPage extends Component {
@@ -18,8 +17,8 @@ class SignUpPage extends Component {
       <div>
         <AuthFormHeader
           headerText={'Sign Up'}
-          btnText={'I have an account'}
-          onBtnClick={ () => history.push(signIn)}
+          linkText={'I have an account'}
+          linkPath={signIn}
         />
         <AuthForm 
           handleSubmit={this.props.actions.signUpRequest}

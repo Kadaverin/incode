@@ -4,7 +4,6 @@ import AuthForm  from 'components/AuthForm'
 import AuthFormHeader from 'components/AuthFormHeader'
 import { signInRequest, clearAuthErrors } from 'actions/auth'
 import { connect } from 'react-redux'
-import history from '../../history'
 import { signUp } from 'constants/routes/ui'
 import { errorResponse } from 'selectors/auth'
 
@@ -18,8 +17,8 @@ class SignInPage extends Component {
       <div>
         <AuthFormHeader
           headerText={'Sign In'}
-          btnText={'I dont have account'}
-          onBtnClick={ () => history.push(signUp)}
+          linkText={'I dont have account'}
+          linkPath={signUp}
         />
         <AuthForm 
           handleSubmit={this.props.actions.signInRequest}
@@ -32,7 +31,7 @@ class SignInPage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  errorResponse: errorResponse(state)
+  errorResponse: errorResponse(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

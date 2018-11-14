@@ -79,7 +79,7 @@ class AuthForm extends Component {
   }
 
   render(){
-    const { classes, btnText, errorResponse } = this.props;
+    const { classes, btnText } = this.props;
     const { errors } = this.state;
     return (
       <div className={classes.flexCenter}>

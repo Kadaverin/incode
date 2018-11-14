@@ -1,36 +1,31 @@
 import React from 'react'
 import { withStyles, AppBar, Typography, Button, Toolbar} from '@material-ui/core'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 const styles = {
-  root: {
-    flexGrow: 1,
-  },
   grow: {
     flexGrow: 1,
   },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
+  linkBtn: {
+    color: 'white',
+    textDecoration: 'none'
   },
 };
 
-const AuthFormHeader = ({ headerText, btnText, onBtnClick, classes }) => {
-
-  const handleClick = (e) => {
-    e.preventDefault(); 
-    onBtnClick();
-  }
+const AuthFormHeader = ({ headerText, linkText, classes , linkPath}) => {
   
   return(
     <AppBar>
       <Toolbar>
         <Typography variant="h6" color="inherit" className={classes.grow}>
           {headerText}
-        </Typography>
-        <Button color="inherit" onClick={ handleClick }> 
-          {btnText} 
-        </Button>
+        </Typography> 
+        <Link to={linkPath}>
+          <Button className={classes.linkBtn}>   
+            {linkText} 
+          </Button>
+        </Link>
       </Toolbar>
     </AppBar>
   )
