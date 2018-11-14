@@ -4,17 +4,16 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { isAuth  } from 'selectors/auth'
 import { currentPath } from 'selectors/router'
-import { signIn, signUp, appRoot } from 'constants/routes/ui'
+import { signIn, signUp, home } from 'constants/routes/ui'
   
-const AuthCheck = (props) => {
-  const {Component, isAuth , currentPath} = props
+const AuthCheck = ({Component, isAuth , currentPath}) => {
 
-  if (!isAuth  && currentPath !== signIn && currentPath !== signUp ) {
+  if (!isAuth  && [signIn, signUp].every( path => path !== currentPath ) ) {
     return <Redirect to={signIn}/>
   }
 
-  if(isAuth  && [signIn, signUp].some( (path) => path === currentPath) ) {
-    return <Redirect to={appRoot} />
+  if(isAuth  && [signIn, signUp].some( path => path === currentPath) ) {
+    return <Redirect to={home} />
   }
 
   return <Component/>

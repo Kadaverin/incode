@@ -33,8 +33,8 @@ const AuthFormHeader = ({ headerText, linkText, classes , linkPath}) => {
 
 AuthFormHeader.propTypes = {
   headerText: PropTypes.string.isRequired,
-  btnText: PropTypes.string.isRequired,
-  onBtnClick: PropTypes.func.isRequired,
+  linkText: PropTypes.string.isRequired,
+  linkPath: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
 }
 
