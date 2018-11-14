@@ -1,0 +1,1 @@
+export const currentPath = ({router}) => router.location.pathname

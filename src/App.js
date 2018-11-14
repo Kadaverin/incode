@@ -1,28 +1,79 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as routes from 'constants/routes/ui';
+import { getAuthUserRequest } from 'actions/auth'
+import HomePage from 'containers/HomePage';
+import history from './history';
+import SignInPage from 'containers/SignInPage';
+import SignUpPage from 'containers/SignUpPage';
+import AuthCheck from 'containers/AuthCheck';
+import {isUserLoading} from 'selectors/auth';
+import {CircleLoader} from 'react-spinners';
+import PropTypes from 'prop-types';
 import './App.css';
 
+const loaderWrpSyles = {
+  position: 'absolute', 
+  left: 'calc(50% - 75px)', 
+  top: 'calc(40% - 75px)'
+}
+
 class App extends Component {
-  render() {
+
+  componentDidMount(){
+    localStorage.getItem('token') && this.props.actions.getAuthUserRequest()
+  }
+
+  renderApp(){
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <ConnectedRouter history={history}>
+        <Switch>
+          <Route path={routes.signUp} render={ () => <AuthCheck Component={SignUpPage}/> }/>
+          <Route path={routes.signIn} render={ () => <AuthCheck Component={SignInPage}/> }/>  
+          <Route path={routes.home} render={ () => <AuthCheck Component={HomePage}/> }/>
+          <Redirect to ={routes.home} />
+        </Switch>
+      </ConnectedRouter>
     );
+  }
+
+  renderSpinner(){
+    return (
+      <div style={loaderWrpSyles}>
+        <CircleLoader
+          sizeUnit={"px"}
+          size={150}
+          color={'#36D7B7'}
+        />
+      </div>
+    )
+  }
+  
+  render() {
+    return this.props.isUserLoading 
+           ? this.renderSpinner()
+           : this.renderApp()
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  isUserLoading: isUserLoading(state)
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({
+    getAuthUserRequest
+  }, dispatch)
+})
+
+App.propTypes = {
+  isUserLoading: PropTypes.bool.isRequired,
+  actions: PropTypes.shape({
+    getAuthUserRequest: PropTypes.func.isRequired
+  })
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

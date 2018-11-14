@@ -1,15 +1,34 @@
-import React, {Component} from 'react'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { authUser } from 'selectors/auth'
+import PropTypes from 'prop-types'
 
 class HomePage extends Component {
   render(){
+    const { authUser } = this.props
+    if(!authUser.login){
+      return null
+    }
     return(
       <div>
-        home
+        <h1>
+          {`Hello, ${authUser.login}`}
+        </h1>
       </div>
     )
   }
 }
 
-export default connect()(HomePage)
+const mapStateToProps = (state) => ({
+  authUser: authUser(state) 
+})
+
+HomePage.propTypes = {
+  authUser : PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    login: PropTypes.string.isRequired,
+    password: PropTypes.string,
+  })
+}
+
+export default connect(mapStateToProps)(HomePage)
